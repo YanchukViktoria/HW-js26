@@ -30,10 +30,10 @@ function createContact(contact) {
     inpListPhone.value = contact.phone; 
     inpListEmail.value = contact.email;
 
-    inpListName.setAttribute("readonly", `);
-    inpListSurname.setAttribute("readonly", `);
-    inpListPhone.setAttribute("readonly", `);
-    inpListEmail.setAttribute("readonly", `);
+    inpListName.setAttribute("readonly", '');
+    inpListSurname.setAttribute("readonly", '');
+    inpListPhone.setAttribute("readonly", '');
+    inpListEmail.setAttribute("readonly", ' ');
 
     inpListName.classList.add("listInp");
     inpListSurname.classList.add("listInp");
@@ -100,7 +100,7 @@ function deleteContact(e) {
         const contactText = e.target.parentElement.firstChild.value;
         console.log(contactText);
         contacts = contacts.filter((contact) => {
-            const contactTextFromArray = ${contact.name};
+            const contactTextFromArray = contact.name;
             return contactTextFromArray  !== contactText;
         })
         localStorage.setItem("contacts", JSON.stringify(contacts));
@@ -108,19 +108,19 @@ function deleteContact(e) {
     }
 }
 
-function editContact(e) {
-    const contactName = e.target.parentElement.children[0].removeAttribute("readonly");
-    const contacSurName = e.target.parentElement.children[1].removeAttribute("readonly");
-    const contactPhone = e.target.parentElement.children[2].removeAttribute("readonly");
-    const contactEmail = e.target.parentElement.children[3].removeAttribute("readonly");
+// function editContact(e) {
+//     e.target.parentElement.children[0].removeAttribute("readonly");
+//     e.target.parentElement.children[1].removeAttribute("readonly");
+//     e.target.parentElement.children[2].removeAttribute("readonly");
+//     e.target.parentElement.children[3].removeAttribute("readonly");
 
-    const li = e.target.parentElement;
-    const saveBtn = document.createElement("button");
-    saveBtn.textContent = "Save";
-    saveBtn.classList.add("saveBtn");
-    li.appendChild(saveBtn);
+//     const li = e.target.parentElement;
+//     const saveBtn = document.createElement("button");
+//     saveBtn.textContent = "Save";
+//     saveBtn.classList.add("saveBtn");
+//     li.appendChild(saveBtn);
 
-}
+// }
 
 // function saveEditedContact(e) {
 //     let contactName = e.target.parentElement.children[0];
@@ -173,10 +173,13 @@ function editContact(e) {
 //     localStorage.setItem("contacts", JSON.stringify(contacts));
 // }
 
+
+
+
 renderContacts(contacts);
 
 saveBtn.addEventListener("click", () => {
-    setTimeout(addContact, 5);
+    addContact()
 });
 contactsList.addEventListener("click", (e) => {
     if (e.target.classList.value == "deleteBtn") {
