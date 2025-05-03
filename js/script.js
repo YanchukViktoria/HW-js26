@@ -16,9 +16,9 @@ const saveBtn = document.querySelector("#save-btn");
 const contactsList = document.querySelector("#contactsList");
 
 let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+let idCounter = 1;
 
 function createContact(contact) {
-    console.log(1);
     const item = document.createElement("li");
     const inpListName = document.createElement("input");
     const inpListSurname = document.createElement("input");
@@ -40,6 +40,8 @@ function createContact(contact) {
     inpListPhone.classList.add("listInp");
     inpListEmail.classList.add("listInp");
 
+    item.setAttribute("id", idCounter);
+
     item.appendChild(inpListName);
     item.appendChild(inpListSurname);
     item.appendChild(inpListPhone);
@@ -54,11 +56,12 @@ function createContact(contact) {
     EditBtn.textContent = "Edit";
     item.appendChild(EditBtn);
 
+    idCounter++;
+
     return item;
 }
 
 function renderContacts(contacts) {
-    console.log(2);
     contactsList.textContent = "";
     contacts.forEach((contact) => {
         contactsList.append(createContact(contact));
@@ -66,7 +69,6 @@ function renderContacts(contacts) {
 }
 
 function addContact(e) {
-    console.log(3);
 
     const userName = inpName.value;
     const userSurName = inpSur.value;
@@ -108,71 +110,56 @@ function deleteContact(e) {
     }
 }
 
-// function editContact(e) {
-//     e.target.parentElement.children[0].removeAttribute("readonly");
-//     e.target.parentElement.children[1].removeAttribute("readonly");
-//     e.target.parentElement.children[2].removeAttribute("readonly");
-//     e.target.parentElement.children[3].removeAttribute("readonly");
+function editContact(e) {
+    e.target.parentElement.children[0].removeAttribute("readonly");
+    e.target.parentElement.children[1].removeAttribute("readonly");
+    e.target.parentElement.children[2].removeAttribute("readonly");
+    e.target.parentElement.children[3].removeAttribute("readonly");
 
-//     const li = e.target.parentElement;
-//     const saveBtn = document.createElement("button");
-//     saveBtn.textContent = "Save";
-//     saveBtn.classList.add("saveBtn");
-//     li.appendChild(saveBtn);
+    const li = e.target.parentElement;
+    const saveBtn = document.createElement("button");
+    saveBtn.textContent = "Save";
+    saveBtn.classList.add("saveBtn");
+    li.appendChild(saveBtn);
+}
 
-// }
+function saveEditedContact(e) {
+    const li = e.target.parentElement;
 
-// function saveEditedContact(e) {
-//     let contactName = e.target.parentElement.children[0];
-//     let contacSurName = e.target.parentElement.children[1];
-//     let contactPhone = e.target.parentElement.children[2];
-//     let contactEmail = e.target.parentElement.children[3];
+    const contactName = li.children[0];
+    const contactSurName = li.children[1];
+    const contactPhone = li.children[2];
+    const contactEmail = li.children[3];
 
-//     contactName.setAttribute("readonly", `);
-//     contacSurName.setAttribute("readonly", `);
-//     contactPhone.setAttribute("readonly", `);
-//     contactEmail.setAttribute("readonly", `);
+    contactName.setAttribute("readonly", '');
+    contactSurName.setAttribute("readonly", '');
+    contactPhone.setAttribute("readonly", '');
+    contactEmail.setAttribute("readonly", '');
 
-//     const li = e.target.parentElement;
-//     const btn = li.lastChild;
-//     btn.remove();
+    e.target.remove();
 
-//     const contactNameValue = contactName.value;
-//     const contacSurNameValue = contacSurName.value;
-//     const contactPhoneValue = contactPhone.value;
-//     const contactEmailValue = contactEmail.value;
+    const contactNameValue = contactName.value.trim();
+    const contactSurNameValue = contactSurName.value.trim();
+    const contactPhoneValue = contactPhone.value.trim();
+    const contactEmailValue = contactEmail.value.trim();
 
-//     if (!contactNameValue || !contacSurNameValue || !contactPhoneValue || !contactEmailValue) {
-//         return;
-//     }
+    if (!contactNameValue || !contactSurNameValue || !contactPhoneValue || !contactEmailValue) {
+        return;
+    }
 
-//     const newContact = {
-//         name: contactNameValue,
-//         surname: contacSurNameValue,
-//         phone: contactPhoneValue,
-//         email: contactEmailValue
-//     };
+    const index = [...contactsList.children].indexOf(li);
 
+    if (index !== -1) {
+        contacts[index] = {
+            name: contactNameValue,
+            surname: contactSurNameValue,
+            phone: contactPhoneValue,
+            email: contactEmailValue
+        };
 
-//     contacts = contacts.map((contact) => {
-//         if (
-//             contact.name === contactNameValue &&
-//             contact.surname === contacSurNameValue &&
-//             contact.phone === contactPhoneValue &&
-//             contact.email === contactEmailValue
-//         ) {
-//             return {
-//                 name: contactNameValue,
-//                 surname: contacSurNameValue,
-//                 phone: contactPhoneValue,
-//                 email: contactEmailValue
-//             };
-//         }
-//         return contact;
-//     });
-//     localStorage.setItem("contacts", JSON.stringify(contacts));
-// }
-
+        localStorage.setItem("contacts", JSON.stringify(contacts));
+    }
+}
 
 
 
